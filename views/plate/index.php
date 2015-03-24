@@ -17,16 +17,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Plate', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'plate_id',
-            'plate_image',
-
+            [
+                'format' => 'image',
+                'value' => function($data) {
+                    return $data->imageUrl;
+                },
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
 
 </div>

@@ -10,9 +10,9 @@ use yii\widgets\ActiveForm;
 
 <div class="plate-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'plate_image')->textInput(['maxlength' => 128]) ?>
+    <?= $form->field($model, 'plate_image')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

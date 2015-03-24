@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PlateController implements the CRUD actions for Plate model.
@@ -73,13 +74,20 @@ class PlateController extends Controller
     {
         $model = new Plate();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->plate_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if(Yii::$app->request->isPost){
+            $model->plate_image = UploadedFile::getInstance($model, 'plate_image');
+            
+            if ($model->validate()) {
+                $model->plate_image->saveAs('images/plate/' . $model->plate_image->baseName . '.' . $model->plate_image->extension);
+                $model->save(false);
+                return $this->redirect(['view', 'id' => $model->plate_id]);
+            }
         }
+        
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+        
     }
 
     /**
